@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .card-container {
+    background-color: rgba(114, 149, 176, 0.678);
+    border-radius: 30px;
+    border: 2px solid white;
+    /* padding: theme("spacing.6"); */
+    box-shadow: theme("boxShadow.xl");
+    color: white;
+  }
+  .small-card-container {
+    background-color: rgba(114, 149, 176, 0.678);
+    border-radius: 10px;
+    border: 2px solid white;
+    /* padding: theme("spacing.6"); */
+    box-shadow: theme("boxShadow.md");
+    color: white;
+  }
+  .make-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn {
+    --tw-shadow: 3px -4px 0px 0px rgba(135, 135, 135, 0.34) inset;
+    --tw-shadow-colored: inset 3px -4px 0px 0px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+      var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    padding-left: 0.75rem /* 12px */;
+    padding-right: 0.75rem /* 12px */;
+    padding-top: 0.5rem /* 8px */;
+    padding-bottom: 0.5rem /* 8px */;
+    color: white;
+    background-color: rgba(150, 192, 225, 0.678);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    border: 2px solid white;
+  }
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+}
