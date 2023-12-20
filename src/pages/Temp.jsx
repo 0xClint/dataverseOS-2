@@ -1,5 +1,8 @@
 import React from "react";
 import {
+  ChainId,
+  Currency,
+  DatatokenType,
   DataverseConnector,
   FolderType,
   SYSTEM_CALL,
@@ -124,6 +127,46 @@ const Temp = () => {
     });
     console.log(res);
   };
+  // "kjzl6kcym7w8yahe0vo3u47r4sxrb9fzmht6f7ggmz0v5yloq4m4rcyrko32jh8",
+  const monetizeFile = async () => {
+    const res = await dataverseConnector.runOS({
+      method: SYSTEM_CALL.monetizeFile,
+      params: {
+        fileId:
+          "kjzl6kcym7w8yahe0vo3u47r4sxrb9fzmht6f7ggmz0v5yloq4m4rcyrko32jh8",
+        datatokenVars: {
+          type: DatatokenType.Profileless,
+          chainId: ChainId.PolygonMumbai,
+          collectModule: "LimitedFeeCollectModule",
+          collectLimit: 100,
+          currency: Currency.WMATIC,
+          amount: 0.0001,
+          recipient: "0x9C7aD87F66Dcd579591adDf51341C54121A1aA00",
+        },
+      },
+    });
+  };
+
+  const loadDataTokens = async () => {
+    const res = await dataverseConnector.runOS({
+      method: SYSTEM_CALL.loadCreatedDatatokenFiles,
+    });
+    console.log(res);
+
+    await dataverseConnector.runOS({
+      method: SYSTEM_CALL.loadCollectedDatatokenFiles,
+    });
+  };
+  const collectFile = async () => {
+    const res = await dataverseConnector.runOS({
+      method: SYSTEM_CALL.collectFile,
+      params: {
+        fileId:
+          "kjzl6kcym7w8yahe0vo3u47r4sxrb9fzmht6f7ggmz0v5yloq4m4rcyrko32jh8",
+      },
+    });
+    console.log(res);
+  };
 
   return (
     <div className="h-screen w-screen flex justify-center items-center flex-col gap-5">
@@ -198,6 +241,24 @@ const Temp = () => {
         className="border px-10 border-black"
       >
         fetchProfiles
+      </button>
+      <button
+        onClick={() => monetizeFile()}
+        className="border px-10 border-black"
+      >
+        monetizeFile
+      </button>
+      <button
+        onClick={() => loadDataTokens()}
+        className="border px-10 border-black"
+      >
+        loadDataTokens
+      </button>
+      <button
+        onClick={() => collectFile()}
+        className="border px-10 border-black"
+      >
+        collectFile
       </button>
     </div>
   );
