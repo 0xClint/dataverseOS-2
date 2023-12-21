@@ -3,6 +3,7 @@ import ConnectWallet from "./ConnectWallet";
 import { ethers } from "ethers";
 import { callFunction } from "../utils/functionCall";
 import { Link } from "react-router-dom";
+import { avatarIcon } from "../assets";
 // import Loader from "./Loader";
 
 const Header = () => {
@@ -25,7 +26,12 @@ const Header = () => {
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <button onClick={() => callContractFunc()}>call</button>
+          <Link to="/profile">
+            <img
+              src={avatarIcon}
+              className="h-10 hover:scale-105 cursor-pointer"
+            />
+          </Link>
           <ConnectWallet />
         </div>
       </div>

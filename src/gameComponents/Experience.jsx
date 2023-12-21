@@ -12,13 +12,16 @@ import { Bullet } from "./Bullet";
 import { BulletHit } from "./BulletHit";
 import { CharacterController } from "./CharacterController";
 import { Map } from "./Map";
+import { useStore } from "../hooks/useStore";
 
 export const Experience = ({ downgradedPerformance = false }) => {
   const [players, setPlayers] = useState([]);
-  console.log(players);
+  const [killstate, setKillState] = useState([]);
+  const [dead, setDead] = useStore((state) => [state.dead, state.setDead]);
+
   const start = async () => {
     // Start the game
-    await insertCoin();
+    await insertCoin({ maxPlayersPerRoom: 2, roomCode: "BbCD" });
 
     // Create a joystick controller for each joining player
     onPlayerJoin((state) => {
@@ -68,15 +71,27 @@ export const Experience = ({ downgradedPerformance = false }) => {
 
   useEffect(() => {
     setNetworkBullets(bullets);
+    // console.log("bullet");
   }, [bullets]);
 
   useEffect(() => {
     setNetworkHits(hits);
+    // console.log("hits");
   }, [hits]);
+
+  useEffect(() => {
+    // if (myPlayer()?.state?.dead == true) {
+    console.log(myPlayer()?.state);
+    // }
+  }, [myPlayer]);
 
   const onKilled = (_victim, killer) => {
     const killerState = players.find((p) => p.state.id === killer).state;
     killerState.setState("kills", killerState.state.kills + 1);
+    // if (_victim == myPlayer?.id) {
+    // console.log("I was Killed");
+    // }
+    setKillState([...killstate, new Date().getTime()]);
   };
 
   return (

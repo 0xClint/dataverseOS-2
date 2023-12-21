@@ -12,6 +12,7 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@types/three": "0.152.1",
+    "dotenv": "^16.3.1",
     "ethers": "5.7.2",
     "leva": "^0.9.35",
     "moralis-v1": "^1.13.0",
@@ -23,7 +24,9 @@
     "react-router-dom": "^6.21.0",
     "react-scripts": "5.0.1",
     "three": "0.153.0",
-    "three-stdlib": "^2.27.1"
+    "three-stdlib": "^2.27.1",
+    "web3.storage": "^4.5.5",
+    "zustand": "^4.4.7"
   },
   "scripts": {
     "start": "react-scripts start",

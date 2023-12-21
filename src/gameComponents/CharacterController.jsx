@@ -4,6 +4,7 @@ import { CapsuleCollider, RigidBody, vec3 } from "@react-three/rapier";
 import { isHost } from "playroomkit";
 import { useEffect, useRef, useState } from "react";
 import { CharacterSoldier } from "./CharacterSoldier";
+
 const MOVEMENT_SPEED = 202;
 const FIRE_RATE = 380;
 export const WEAPON_OFFSET = {
@@ -142,7 +143,7 @@ export const CharacterController = ({
       directionalLight.current.target = character.current;
     }
   }, [character.current]);
-
+  // console.log(state.id);
   return (
     <group {...props} ref={group}>
       {userPlayer && <CameraControls ref={controls} />}
@@ -165,12 +166,7 @@ export const CharacterController = ({
               state.setState("dead", true);
               state.setState("health", 0);
               rigidbody.current.setEnabled(false);
-              setTimeout(() => {
-                spawnRandomly();
-                rigidbody.current.setEnabled(true);
-                state.setState("health", 100);
-                state.setState("dead", false);
-              }, 2000);
+
               onKilled(state.id, other.rigidBody.userData.player);
             } else {
               state.setState("health", newHealth);

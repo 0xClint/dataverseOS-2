@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ChainId,
   Currency,
@@ -6,6 +6,7 @@ import {
   DataverseConnector,
   FolderType,
   SYSTEM_CALL,
+  StorageProviderName,
   WALLET,
 } from "@dataverse/dataverse-connector";
 
@@ -64,7 +65,27 @@ const Temp = () => {
   const getModelBasicInfo = async () => {
     const res = await dataverseConnector.runOS({
       method: SYSTEM_CALL.getModelBaseInfo,
-      params: profileModelId,
+      // params: profileModelId,
+      params: "kjzl6hvfrbw6c841b6wg3rznbzrwzprjjrlvhoni1bhzu8r3yhbrpqqdmoomy0g",
+    });
+    console.log(res);
+  };
+  const createComment = async () => {
+    const res = await dataverseConnector.runOS({
+      method: SYSTEM_CALL.createIndexFile,
+      params: {
+        modelId:
+          "kjzl6hvfrbw6c841b6wg3rznbzrwzprjjrlvhoni1bhzu8r3yhbrpqqdmoomy0g",
+        fileName: "comment",
+        fileContent: {
+          modelVersion: "0.0.1",
+          name: "comment",
+          description: "tempprofileDescription2",
+          image:
+            "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+          background: "black",
+        },
+      },
     });
     console.log(res);
   };
@@ -128,44 +149,74 @@ const Temp = () => {
     console.log(res);
   };
   // "kjzl6kcym7w8yahe0vo3u47r4sxrb9fzmht6f7ggmz0v5yloq4m4rcyrko32jh8",
-  const monetizeFile = async () => {
+  // const monetizeFile = async () => {
+  //   const res = await dataverseConnector.runOS({
+  //     method: SYSTEM_CALL.monetizeFile,
+  //     params: {
+  //       fileId:
+  //         "kjzl6kcym7w8yahe0vo3u47r4sxrb9fzmht6f7ggmz0v5yloq4m4rcyrko32jh8",
+  //       datatokenVars: {
+  //         type: DatatokenType.Profileless,
+  //         chainId: ChainId.PolygonMumbai,
+  //         collectModule: "LimitedFeeCollectModule",
+  //         collectLimit: 100,
+  //         currency: Currency.WMATIC,
+  //         amount: 0.0001,
+  //         recipient: "0x9C7aD87F66Dcd579591adDf51341C54121A1aA00",
+  //       },
+  //     },
+  //   });
+  // };
+
+  // const loadDataTokens = async () => {
+  //   const res = await dataverseConnector.runOS({
+  //     method: SYSTEM_CALL.loadCreatedDatatokenFiles,
+  //   });
+  //   console.log(res);
+
+  //   await dataverseConnector.runOS({
+  //     method: SYSTEM_CALL.loadCollectedDatatokenFiles,
+  //   });
+  // };
+  // const collectFile = async () => {
+  //   const res = await dataverseConnector.runOS({
+  //     method: SYSTEM_CALL.collectFile,
+  //     params: {
+  //       fileId:
+  //         "kjzl6kcym7w8yahe0vo3u47r4sxrb9fzmht6f7ggmz0v5yloq4m4rcyrko32jh8",
+  //     },
+  //   });
+  //   console.log(res);
+  // };
+
+  const createBareFile = async () => {
+    const data = {
+      name: "Player1",
+      bio: "bioLink",
+      age: 10,
+    };
     const res = await dataverseConnector.runOS({
-      method: SYSTEM_CALL.monetizeFile,
+      method: SYSTEM_CALL.createBareFile,
       params: {
-        fileId:
-          "kjzl6kcym7w8yahe0vo3u47r4sxrb9fzmht6f7ggmz0v5yloq4m4rcyrko32jh8",
-        datatokenVars: {
-          type: DatatokenType.Profileless,
-          chainId: ChainId.PolygonMumbai,
-          collectModule: "LimitedFeeCollectModule",
-          collectLimit: 100,
-          currency: Currency.WMATIC,
-          amount: 0.0001,
-          recipient: "0x9C7aD87F66Dcd579591adDf51341C54121A1aA00",
+        // folderId,
+        fileBase64: JSON.stringify(data),
+        fileName: "Profile2",
+        storageProvider: {
+          name: StorageProviderName.Web3Storage,
+          apiKey:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRhMzczNWI5MTNGZjkwNjkxYTdmMmNFODcyOGRlNmY1OEVCQzhCMEYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODcxMTU3MjA5MTgsIm5hbWUiOiJmaWxlc3RhbXAifQ.k-lt_SaJOBIpRkF17PcBAyW6PasKxCZDLsD6fM3llH4",
         },
       },
     });
+    console.log(res);
   };
 
-  const loadDataTokens = async () => {
+  const fetchBareFile = async () => {
     const res = await dataverseConnector.runOS({
-      method: SYSTEM_CALL.loadCreatedDatatokenFiles,
+      method: SYSTEM_CALL.loadBareFileContent,
+      params: "kjzl6kcym7w8y8avvxck0q4logiadprh174znzcmlh30ew3h57b0sjachmabb1k",
     });
-    console.log(res);
-
-    await dataverseConnector.runOS({
-      method: SYSTEM_CALL.loadCollectedDatatokenFiles,
-    });
-  };
-  const collectFile = async () => {
-    const res = await dataverseConnector.runOS({
-      method: SYSTEM_CALL.collectFile,
-      params: {
-        fileId:
-          "kjzl6kcym7w8yahe0vo3u47r4sxrb9fzmht6f7ggmz0v5yloq4m4rcyrko32jh8",
-      },
-    });
-    console.log(res);
+    console.log(JSON.parse(res));
   };
 
   return (
@@ -242,7 +293,7 @@ const Temp = () => {
       >
         fetchProfiles
       </button>
-      <button
+      {/* <button
         onClick={() => monetizeFile()}
         className="border px-10 border-black"
       >
@@ -259,6 +310,24 @@ const Temp = () => {
         className="border px-10 border-black"
       >
         collectFile
+      </button> */}
+      <button
+        onClick={() => createBareFile()}
+        className="border px-10 border-black"
+      >
+        createBareFile
+      </button>
+      <button
+        onClick={() => fetchBareFile()}
+        className="border px-10 border-black"
+      >
+        fetchBareFile
+      </button>
+      <button
+        // onClick={() => handleButton()}
+        className="border px-10 border-black"
+      >
+        handleButton
       </button>
     </div>
   );

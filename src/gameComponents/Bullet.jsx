@@ -48,7 +48,7 @@ export const Bullet = ({ player, angle, position, onHit }) => {
           userData={{
             type: "bullet",
             player,
-            damage: 1,
+            damage: 10,
           }}
         >
           <mesh position-z={0.25} material={bulletMaterial} castShadow>

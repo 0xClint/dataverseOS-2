@@ -4,7 +4,7 @@ import { useGraph } from "@react-three/fiber";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { SkeletonUtils } from "three-stdlib";
 
-export function PlayerProfile(props) {
+export function PlayerProfile({ color }) {
   const group = useRef();
   const { scene, materials, animations } = useGLTF("/models/modelProfile.glb");
 
@@ -13,8 +13,6 @@ export function PlayerProfile(props) {
   const { nodes } = useGraph(clone);
   // console.log(nodes);
   const { actions } = useAnimations(animations, group);
-
-  const [color, setColor] = useState("green");
 
   const playerColorMaterial = useMemo(
     () =>
@@ -25,32 +23,17 @@ export function PlayerProfile(props) {
   );
 
   useEffect(() => {
-    // ASSIGNING CHARACTER COLOR
-    nodes.Body.traverse((child) => {
-      if (child.isMesh && child.material.name === "") {
-        child.material = playerColorMaterial;
-      }
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
+    console.log(color);
     nodes.Head.traverse((child) => {
       if (child.isMesh && child.material.name === "Character_Main") {
-        child.material = playerColorMaterial;
+        child.material = new MeshStandardMaterial({
+          color,
+        });
       }
     });
-    clone.traverse((child) => {
-      if (child.isMesh && child.material.name === "Character_Main") {
-        child.material = playerColorMaterial;
-      }
-      if (child.isMesh) {
-        child.castShadow = true;
-      }
-    });
-  }, [nodes, clone]);
+  }, [color]);
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} dispose={null}>
       <group name="Scene">
         <group name="CharacterArmature">
           <group name="Body">

@@ -1,9 +1,10 @@
-import React from "react";
-import { Header } from "../components";
-import { bgImg } from "../assets";
+import React, { useState } from "react";
+import { ChatBox, Header } from "../components";
+import { bgImg, chatIcon } from "../assets";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  const [chatMenu, setChatMenu] = useState(false);
   return (
     <div>
       <img src={bgImg} className="absolute -z-10 h-screen w-screen" />
@@ -18,14 +19,20 @@ const Home = () => {
             to="/game"
             className="btn w-[400px] hover:bg-[#f4f4f4] hover:scale-[101%] py-3 text-lg"
           >
-            Start Game
+            Duo Game
+          </Link>
+          <Link
+            to="/game"
+            className="btn w-[400px] hover:bg-[#f4f4f4] hover:scale-[101%] py-3 text-lg"
+          >
+            Multiplayer
           </Link>
 
           <Link
-            to="/profile"
+            to="/inventory"
             className="btn w-[400px] hover:bg-[#f4f4f4] hover:scale-[101%] py-3 text-lg"
           >
-            Profile
+            Inventory
           </Link>
 
           <button className="btn w-[400px] hover:bg-[#f4f4f4] hover:scale-[101%] py-3 text-lg">
@@ -33,6 +40,13 @@ const Home = () => {
           </button>
         </div>
       </div>
+      <div
+        className="absolute menuSelector bottom-5 right-5 cursor-pointer hover:scale-105"
+        onClick={() => setChatMenu(!chatMenu)}
+      >
+        <img src={chatIcon} className="w-20" />
+      </div>
+      {chatMenu && <ChatBox setChatMenu={setChatMenu} />}
     </div>
   );
 };
