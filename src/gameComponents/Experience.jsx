@@ -80,18 +80,9 @@ export const Experience = ({ downgradedPerformance = false }) => {
     // console.log("hits");
   }, [hits]);
 
-  useEffect(() => {
-    if (myPlayer()?.state?.dead == true) {
-      console.log("You dead");
-    }
-  }, [players]);
-
   const onKilled = (_victim, killer) => {
     const killerState = players.find((p) => p.state.id === killer).state;
     killerState.setState("kills", killerState.state.kills + 1);
-    // if (_victim == myPlayer?.id) {
-    // console.log("I was Killed");
-    // }
     setKillState([...killstate, new Date().getTime()]);
   };
 

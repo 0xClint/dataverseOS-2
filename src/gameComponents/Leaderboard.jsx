@@ -1,7 +1,17 @@
-import { usePlayersList } from "playroomkit";
+import { usePlayersList, myPlayer } from "playroomkit";
+import { useEffect } from "react";
 
 export const Leaderboard = () => {
   const players = usePlayersList(true);
+
+  useEffect(() => {
+    const chechDead = async () => {
+      let myPlayerData = players.filter((item) => item.myId == item.id);
+      if (myPlayerData[0]?.state?.dead) console.log("You were killed!");
+    };
+    chechDead();
+  }, [players]);
+
   return (
     <>
       <div className="fixed top-0 left-0 right-0 p-4 flex z-10 gap-4">
