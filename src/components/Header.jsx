@@ -21,7 +21,7 @@ const Header = () => {
       <div className="w-full flex text-[2rem] justify-between items-center h-16 px-5 ">
         <div className="flex gap-4 items-center">
           <div className="leading-7 m-0 p-0 font-bold text-white">
-            <Link to="/">Game</Link>
+            <Link to="/"> Warfield</Link>
           </div>
         </div>
 

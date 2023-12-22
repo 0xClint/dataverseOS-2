@@ -12,7 +12,7 @@ const Home = () => {
       <div className="make-flex w-screen h-screen flex-col">
         <div className="w-[600px] mx-auto h-screen flex-col text-center make-flex justify-start pt-32 gap-3">
           <h2 className="font-bold text-[40px] text-white  my-12 make-flex">
-            Game name
+            Warfield
           </h2>
 
           <Link

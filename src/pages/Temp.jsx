@@ -9,6 +9,13 @@ import {
   StorageProviderName,
   WALLET,
 } from "@dataverse/dataverse-connector";
+import {
+  callFunction,
+  insertValFunc,
+  readTableFunc,
+  updateValFunc,
+} from "../utils/functionCall";
+import { ethers } from "ethers";
 
 const appId = "c262bfaf-11f2-4719-bd53-911b1edf6e5f";
 const profileModelId =
@@ -219,6 +226,31 @@ const Temp = () => {
     console.log(JSON.parse(res));
   };
 
+  const readTable = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await readTableFunc(signer);
+  };
+  const functionCall = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await callFunction(signer);
+  };
+  const insertValue = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await insertValFunc(signer);
+  };
+  const updateValue = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await updateValFunc(signer);
+  };
+
   return (
     <div className="h-screen w-screen flex justify-center items-center flex-col gap-5">
       <button
@@ -227,12 +259,27 @@ const Temp = () => {
       >
         Connect Wallet
       </button>
-      {/* <button
-        onClick={() => getDappTable()}
+      <button
+        onClick={() => functionCall()}
         className="border px-10 border-black"
       >
-        getDappTable
-      </button> */}
+        FunctionCall
+      </button>
+      <button onClick={() => readTable()} className="border px-10 border-black">
+        readTable
+      </button>
+      <button
+        onClick={() => insertValue()}
+        className="border px-10 border-black"
+      >
+        insertValue
+      </button>
+      <button
+        onClick={() => updateValue()}
+        className="border px-10 border-black"
+      >
+        updateValue
+      </button>
       <button
         onClick={() => getTableInfo()}
         className="border px-10 border-black"

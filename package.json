@@ -8,6 +8,7 @@
     "@react-three/fiber": "8.13.3",
     "@react-three/postprocessing": "^2.15.1",
     "@react-three/rapier": "^1.1.1",
+    "@tableland/sdk": "^5.2.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",

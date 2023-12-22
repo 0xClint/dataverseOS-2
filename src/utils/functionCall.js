@@ -1,8 +1,9 @@
 
 import { ethers } from "ethers";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "./constants";
+import { Database } from "@tableland/sdk";
 
-// ******************WORLD NFT Function call****************************
+const tableName = "starter_table_11155111_389"
 
 export const callFunction = async (signer) => {
     const account = await signer.getAddress();
@@ -11,25 +12,50 @@ export const callFunction = async (signer) => {
         CONTRACT_ABI,
         signer
     );
-    const tx = await contract.wrap(2);
+    const tx = await contract.tableName();
+    // await tx.wait();
+    console.log(tx)
+};
+
+export const insertValFunc = async (signer) => {
+    const account = await signer.getAddress();
+    const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.insertVal("temp-Val");
     await tx.wait();
     console.log(tx)
 };
 
+export const updateValFunc = async (signer) => {
+    const account = await signer.getAddress();
+    const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.updateVal(1, "updated-temp-Val-2");
+    await tx.wait();
+    console.log(tx)
+};
 
-// export const updateUserAvatarImageFunc = async (signer) => {
-//     const account = await signer.getAddress();
-//     const contract = new ethers.Contract(
-//         AVATAR_NFT_CONTRACT_ADDRESS,
-//         AVATAR_NFT_CONTRACT_ABI,
-//         signer
-//     );
-//     const tx = await contract.updateUserAvatarImage("CID", "updated attribute");
-//     await tx.wait();
-//     console.log(tx)
-// };
+export const readTableFunc = async (signer) => {
+    try {
+        const db = new Database({ signer });
+        if (tableName !== undefined) {
+            const { results } = await db
+                .prepare(`SELECT * FROM ${tableName}`)
+                .all();
+            console.log(results);
+        }
+    } catch (err) {
+        console.error(err.message);
+    }
+}
 
-// export const setUserInfoFunc = async (signer) => {
+// export const tableNameFunc = async (signer) => {
 //     const account = await signer.getAddress();
 //     const contract = new ethers.Contract(
 //         AVATAR_NFT_CONTRACT_ADDRESS,

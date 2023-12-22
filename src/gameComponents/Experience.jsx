@@ -81,9 +81,9 @@ export const Experience = ({ downgradedPerformance = false }) => {
 
   useEffect(() => {
     // if (myPlayer()?.state?.dead == true) {
-    console.log(myPlayer()?.state);
+    console.log(myPlayer());
     // }
-  }, [myPlayer]);
+  }, [myPlayer()]);
 
   const onKilled = (_victim, killer) => {
     const killerState = players.find((p) => p.state.id === killer).state;
