@@ -1,13 +1,16 @@
-import { usePlayersList, myPlayer } from "playroomkit";
+import { usePlayersList } from "playroomkit";
 import { useEffect } from "react";
+import { useStore } from "../hooks/useStore";
 
 export const Leaderboard = () => {
   const players = usePlayersList(true);
+  const [dead, setDead] = useStore((state) => [state.dead, state.setDead]);
 
   useEffect(() => {
     const chechDead = async () => {
       let myPlayerData = players.filter((item) => item.myId == item.id);
-      if (myPlayerData[0]?.state?.dead) console.log("You were killed!");
+      // console.log(myPlayerData);
+      if (myPlayerData[0]?.state?.dead) setDead();
     };
     chechDead();
   }, [players]);

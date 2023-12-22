@@ -1,5 +1,5 @@
 export const CONTRACT_ADDRESS =
-  "0x7Ea79CfC422B2091c35B181AeE4557f43EBea4c2";
+  "0x32cA7D605Aa09EaDa6E0ecE7AC68C8668dEc21C4";
 
 
 export const CONTRACT_ABI = [
@@ -22,14 +22,73 @@ export const CONTRACT_ABI = [
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "bio",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "addr",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "guns",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "data",
+        "type": "string"
+      }
+    ],
+    "name": "createUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64[]",
+        "name": "roomIds",
+        "type": "uint64[]"
+      }
+    ],
+    "name": "deleteRoom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint64",
         "name": "id",
         "type": "uint64"
       }
     ],
-    "name": "deleteVal",
+    "name": "deleteUser",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getLeaderboardTableId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -140,16 +199,29 @@ export const CONTRACT_ABI = [
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "getRoomTableId",
+    "outputs": [
       {
-        "internalType": "string",
-        "name": "val",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "name": "insertVal",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getUserTableId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -187,19 +259,6 @@ export const CONTRACT_ABI = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "tableName",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint64",
@@ -208,14 +267,33 @@ export const CONTRACT_ABI = [
       },
       {
         "internalType": "string",
-        "name": "val",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "bio",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "addr",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "guns",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "data",
         "type": "string"
       }
     ],
-    "name": "updateVal",
+    "name": "updateUser",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }
 ]
-

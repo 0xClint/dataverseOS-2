@@ -6,6 +6,7 @@ import { Suspense, useState } from "react";
 import { Experience } from "../gameComponents/Experience";
 import { Leaderboard } from "../gameComponents/Leaderboard";
 import { useStore } from "../hooks/useStore";
+import { Link } from "react-router-dom";
 
 const Game = () => {
   const [downgradedPerformance, setDowngradedPerformance] = useState(false);
@@ -20,11 +21,14 @@ const Game = () => {
         <div className="absolute z-10 w-screen h-screen make-flex bg-[#b0ceff3a]">
           <div className="card-container w-[400px] h-[200px] py-6 flex flex-col">
             <h1 className="text-center text-[2.5rem] font-bold mb-10">
-              Warfield
+              Game Over
             </h1>
-            <button className="btn bg-blue-600 text-white mx-1 hover:scale-105">
+            <Link
+              to="/"
+              className="btn bg-blue-600 text-white mx-1 hover:scale-105 text-center"
+            >
               Go home
-            </button>
+            </Link>
           </div>
         </div>
       )}

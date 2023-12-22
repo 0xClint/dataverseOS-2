@@ -12,12 +12,10 @@ import { Bullet } from "./Bullet";
 import { BulletHit } from "./BulletHit";
 import { CharacterController } from "./CharacterController";
 import { Map } from "./Map";
-import { useStore } from "../hooks/useStore";
 
 export const Experience = ({ downgradedPerformance = false }) => {
   const [players, setPlayers] = useState([]);
   const [killstate, setKillState] = useState([]);
-  const [dead, setDead] = useStore((state) => [state.dead, state.setDead]);
 
   const start = async () => {
     // Start the game
@@ -33,7 +31,7 @@ export const Experience = ({ downgradedPerformance = false }) => {
       });
       const newPlayer = { state, joystick };
 
-      // state.setState("profile", { name: "p1", color: "red" });
+      // state.setState("profile", { name: "p1", color: "red",photo:"url" });
       state.setState("health", 100);
       state.setState("deaths", 0);
       state.setState("kills", 0);
@@ -72,12 +70,10 @@ export const Experience = ({ downgradedPerformance = false }) => {
 
   useEffect(() => {
     setNetworkBullets(bullets);
-    // console.log("bullet");
   }, [bullets]);
 
   useEffect(() => {
     setNetworkHits(hits);
-    // console.log("hits");
   }, [hits]);
 
   const onKilled = (_victim, killer) => {

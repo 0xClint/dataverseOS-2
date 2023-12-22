@@ -12,7 +12,8 @@ export const callFunction = async (signer) => {
         CONTRACT_ABI,
         signer
     );
-    const tx = await contract.tableName();
+    const tx = await contract.getUserTableId();
+    // const tx = await contract.createUser("name1", "bio1", "addr1", "guns1", "data1");
     // await tx.wait();
     console.log(tx)
 };
