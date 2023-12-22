@@ -32,7 +32,8 @@ export const Experience = ({ downgradedPerformance = false }) => {
         buttons: [{ id: "fire", label: "Fire" }],
       });
       const newPlayer = { state, joystick };
-      state.setState("profile", { name: "p1", color: "red" });
+
+      // state.setState("profile", { name: "p1", color: "red" });
       state.setState("health", 100);
       state.setState("deaths", 0);
       state.setState("kills", 0);
@@ -80,10 +81,10 @@ export const Experience = ({ downgradedPerformance = false }) => {
   }, [hits]);
 
   useEffect(() => {
-    // if (myPlayer()?.state?.dead == true) {
-    console.log(myPlayer());
-    // }
-  }, [myPlayer()]);
+    if (myPlayer()?.state?.dead == true) {
+      console.log("You dead");
+    }
+  }, [players]);
 
   const onKilled = (_victim, killer) => {
     const killerState = players.find((p) => p.state.id === killer).state;
