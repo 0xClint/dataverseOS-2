@@ -2,14 +2,12 @@
 pragma solidity >=0.8.10 <0.9.0;
 
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
-import {TablelandController} from "@tableland/evm/contracts/TablelandController.sol";
-import {TablelandPolicy} from "@tableland/evm/contracts/TablelandPolicy.sol";
 import {TablelandDeployments} from "@tableland/evm/contracts/utils/TablelandDeployments.sol";
 import {SQLHelpers} from "@tableland/evm/contracts/utils/SQLHelpers.sol";
 import {ERC721Holder} from "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
-import {ITablelandTables} from "@tableland/evm/contracts/interfaces/ITablelandTables.sol";
 
-contract Starter is TablelandController, ERC721Holder {
+// Starter template for contract owned and controlled tables
+contract Starter is ERC721Holder {
     uint256 private userTableId;
     uint256 private roomTableId;
     uint256 private leaderboardTableId;
@@ -23,7 +21,7 @@ contract Starter is TablelandController, ERC721Holder {
         userTableId = TablelandDeployments.get().create(
             address(this),
             SQLHelpers.toCreateFromSchema(
-                "id integer primary key autoincrement,"
+                "id integer primary key,"
                 "name text,"
                 "bio text,"
                 "addr text,"
@@ -32,17 +30,12 @@ contract Starter is TablelandController, ERC721Holder {
                 _USER_TABLE_PREFIX
             )
         );
-        TablelandDeployments.get().setController(
-            address(this),
-            userTableId,
-            address(this)
-        );
 
         // Create RoomTable
         roomTableId = TablelandDeployments.get().create(
             address(this),
             SQLHelpers.toCreateFromSchema(
-                "roomid integer primary key manual,"
+                "roomid integer primary key,"
                 "addr text,"
                 "people text,"
                 "status text,"
@@ -50,122 +43,127 @@ contract Starter is TablelandController, ERC721Holder {
                 _ROOM_TABLE_PREFIX
             )
         );
-        TablelandDeployments.get().setController(
-            address(this),
-            roomTableId,
-            address(this)
-        );
 
         // Create Leaderboard
         leaderboardTableId = TablelandDeployments.get().create(
             address(this),
             SQLHelpers.toCreateFromSchema(
-                "id integer primary key manual,"
+                "id integer primary key"
                 "addr text,"
                 "time text,"
                 "gun text",
                 _LEADERBOARD_TABLE_PREFIX
             )
         );
-        TablelandDeployments.get().setController(
-            address(this),
-            leaderboardTableId,
-            address(this)
-        );
+
+        // Putting 10 Random Entries in Leaderboard
+        _initializeLeaderboardZero();
     }
 
-    function getUserTableId() external view returns (uint256) {
-        return userTableId;
+    function getUserTableName() external view returns (string memory) {
+        return SQLHelpers.toNameFromId(_USER_TABLE_PREFIX, userTableId);
     }
 
-    function getRoomTableId() external view returns (uint256) {
-        return roomTableId;
+    function getRoomTableName() external view returns (string memory) {
+        return SQLHelpers.toNameFromId(_ROOM_TABLE_PREFIX, roomTableId);
     }
 
-    function getLeaderboardTableId() external view returns (uint256) {
-        return leaderboardTableId;
+    function getLeadboardTableName() external view returns (string memory) {
+        return
+            SQLHelpers.toNameFromId(
+                _LEADERBOARD_TABLE_PREFIX,
+                leaderboardTableId
+            );
     }
-
 
     function createUser(
-        string[] memory names,
-        string[] memory bios,
-        string[] memory addrs,
-        string[] memory guns,
-        string[] memory datas
+        string memory name,
+        string memory bio,
+        string memory addr,
+        string memory guns,
+        string memory data
     ) external {
-        ITablelandTables.Statement[] memory statements = new ITablelandTables.Statement[](names.length);
-        
-        for (uint256 i = 0; i < names.length; i++) {
-            string memory sql = SQLHelpers.toInsert(
+        // string memory insertQuery = SQLHelpers.toInsert(
+        //     _USER_TABLE_PREFIX,
+        //     userTableId,
+        //     "name, bio, addr, guns, data",
+        //     string.concat(
+        //         SQLHelpers.quote(name),
+        //         ",",
+        //         SQLHelpers.quote(bio),
+        //         ",",
+        //         SQLHelpers.quote(addr),
+        //         ",",
+        //         SQLHelpers.quote(guns),
+        //         ",",
+        //         SQLHelpers.quote(data)
+        //     )
+        // )
+
+        TablelandDeployments.get().mutate(
+            address(this),
+            userTableId,
+            SQLHelpers.toInsert(
                 _USER_TABLE_PREFIX,
                 userTableId,
-                "name, bio, addr, guns, data",
-                string(
-                    abi.encodePacked(
-                        SQLHelpers.quote(names[i]),
-                        ",",
-                        SQLHelpers.quote(bios[i]),
-                        ",",
-                        SQLHelpers.quote(addrs[i]),
-                        ",",
-                        SQLHelpers.quote(guns[i]),
-                        ",",
-                        SQLHelpers.quote(datas[i])
-                    )
+                "name,bio,addr,guns,data",
+                string.concat(
+                    SQLHelpers.quote(name),
+                    ",",
+                    SQLHelpers.quote(bio),
+                    ",",
+                    SQLHelpers.quote(addr),
+                    ",",
+                    SQLHelpers.quote(guns),
+                    ",",
+                    SQLHelpers.quote(data)
                 )
-            );
-            statements[i] = ITablelandTables.Statement(userTableId, sql);
-        }
-        
-        TablelandDeployments.get().mutate(address(this), statements);
+            )
+        );
     }
 
     function updateUser(
-        uint64[] memory ids,
-        string[] memory names,
-        string[] memory bios,
-        string[] memory addrs,
-        string[] memory guns,
-        string[] memory datas
+        uint64 id,
+        string memory name,
+        string memory bio,
+        string memory addr,
+        string memory guns,
+        string memory data
     ) external {
-        require(
-            ids.length == names.length &&
-            ids.length == bios.length &&
-            ids.length == addrs.length &&
-            ids.length == guns.length &&
-            ids.length == datas.length,
-            "Array lengths do not match"
+        string memory setters = string.concat(
+            "name=",
+            SQLHelpers.quote(name),
+            ",",
+            "bio=",
+            SQLHelpers.quote(bio),
+            ",",
+            "addr=",
+            SQLHelpers.quote(addr),
+            ",",
+            "guns=",
+            SQLHelpers.quote(guns),
+            ",",
+            "data=",
+            SQLHelpers.quote(data)
         );
-        
-        ITablelandTables.Statement[] memory statements = new ITablelandTables.Statement[](ids.length);
-        
-        for (uint256 i = 0; i < ids.length; i++) {
-            string memory setters = string(
-                abi.encodePacked(
-                    "name=", SQLHelpers.quote(names[i]), ",",
-                    "bio=", SQLHelpers.quote(bios[i]), ",",
-                    "addr=", SQLHelpers.quote(addrs[i]), ",",
-                    "guns=", SQLHelpers.quote(guns[i]), ",",
-                    "data=", SQLHelpers.quote(datas[i])
-                )
-            );
-            string memory filters = string(
-                abi.encodePacked(
-                    "id=", Strings.toString(ids[i])
-                )
-            );
-            string memory sql = SQLHelpers.toUpdate(_USER_TABLE_PREFIX, userTableId, setters, filters);
-            statements[i] = ITablelandTables.Statement(userTableId, sql);
-        }
-        
-        TablelandDeployments.get().mutate(address(this), statements);
+
+        string memory filters = string.concat("id=", Strings.toString(id));
+
+        TablelandDeployments.get().mutate(
+            address(this),
+            userTableId,
+            SQLHelpers.toUpdate(
+                _USER_TABLE_PREFIX,
+                userTableId,
+                setters,
+                filters
+            )
+        );
     }
-    
-   
 
     function deleteUser(uint64 id) external {
         string memory filters = string.concat("id=", Strings.toString(id));
+
         TablelandDeployments.get().mutate(
             address(this),
             userTableId,
@@ -173,90 +171,142 @@ contract Starter is TablelandController, ERC721Holder {
         );
     }
 
-  
-
     function createRoom(
-        string[] memory addrs,
-        string[] memory people,
-        string[] memory statuses,
-        string[] memory guns
+        uint256 roomid,
+        string memory addr,
+        string memory people,
+        string memory status,
+        string memory gun
     ) external {
-        require(
-            addrs.length == people.length &&
-            addrs.length == statuses.length &&
-            addrs.length == guns.length,
-            "Array lengths do not match"
+        string memory insertQuery = SQLHelpers.toInsert(
+            _ROOM_TABLE_PREFIX,
+            roomTableId,
+            "roomid, addr, people, status, gun",
+            string.concat(
+                Strings.toString(roomid),
+                ",",
+                SQLHelpers.quote(addr),
+                ",",
+                SQLHelpers.quote(people),
+                ",",
+                SQLHelpers.quote(status),
+                ",",
+                SQLHelpers.quote(gun)
+            )
         );
-        
-        ITablelandTables.Statement[] memory statements = new ITablelandTables.Statement[](addrs.length);
-        
-        for (uint256 i = 0; i < addrs.length; i++) {
-            string memory sql = SQLHelpers.toInsert(
-                _ROOM_TABLE_PREFIX,
-                roomTableId,
-                "addr, people, status, gun",
-                string(
-                    abi.encodePacked(
-                        SQLHelpers.quote(addrs[i]),
-                        ",",
-                        SQLHelpers.quote(people[i]),
-                        ",",
-                        SQLHelpers.quote(statuses[i]),
-                        ",",
-                        SQLHelpers.quote(guns[i])
-                    )
-                )
-            );
-            statements[i] = ITablelandTables.Statement(roomTableId, sql);
-        }
-        
-        TablelandDeployments.get().mutate(address(this), statements);
+
+        TablelandDeployments.get().mutate(
+            address(this),
+            roomTableId,
+            insertQuery
+        );
     }
 
-    function updateLeaderboard(
-        uint64[] memory ids,
-        string[] memory addrs,
-        string[] memory times,
-        string[] memory guns
-    ) external {
-        require(
-            ids.length == addrs.length &&
-            ids.length == times.length &&
-            ids.length == guns.length,
-            "Array lengths do not match"
+    // Delete using room ID
+    function deleteRoom(uint256 roomid) external {
+        string memory filters = string.concat(
+            "roomid=",
+            Strings.toString(roomid)
         );
-        
-        ITablelandTables.Statement[] memory statements = new ITablelandTables.Statement[](ids.length * 2);
-        
-        for (uint256 i = 0; i < ids.length; i++) {
-            string memory filters = string(
+
+        TablelandDeployments.get().mutate(
+            address(this),
+            roomTableId,
+            SQLHelpers.toDelete(_ROOM_TABLE_PREFIX, roomTableId, filters)
+        );
+    }
+
+    // Function to generate random leaderboard entries and insert them
+    function _initializeLeaderboard() internal {
+        for (uint256 i = 0; i < 10; i++) {
+            // Generate random data for address, time, and gun
+            string memory randomAddr = string(
                 abi.encodePacked(
-                    "id=", Strings.toString(ids[i])
+                    "0x",
+                    Strings.toHexString(uint256(uint160(address(this))) + i)
                 )
             );
-            
-            string memory deleteSql = SQLHelpers.toDelete(_LEADERBOARD_TABLE_PREFIX, leaderboardTableId, filters);
-            statements[i * 2] = ITablelandTables.Statement(leaderboardTableId, deleteSql);
-            
-            string memory insertSql = SQLHelpers.toInsert(
+            string memory randomTime = Strings.toString(block.timestamp + i);
+            string memory randomGun = string(
+                abi.encodePacked("Gun", Strings.toString(i))
+            );
+
+            // Prepare the insert query
+            string memory insertQuery = SQLHelpers.toInsert(
                 _LEADERBOARD_TABLE_PREFIX,
                 leaderboardTableId,
                 "addr, time, gun",
-                string(
-                    abi.encodePacked(
-                        SQLHelpers.quote(addrs[i]),
-                        ",",
-                        SQLHelpers.quote(times[i]),
-                        ",",
-                        SQLHelpers.quote(guns[i])
-                    )
+                string.concat(
+                    SQLHelpers.quote(randomAddr),
+                    ",",
+                    SQLHelpers.quote(randomTime),
+                    ",",
+                    SQLHelpers.quote(randomGun)
                 )
             );
-            statements[i * 2 + 1] = ITablelandTables.Statement(leaderboardTableId, insertSql);
+
+            // Execute the insert
+            TablelandDeployments.get().mutate(
+                address(this),
+                leaderboardTableId,
+                insertQuery
+            );
         }
-        
-        TablelandDeployments.get().mutate(address(this), statements);
     }
 
- 
+    // Function to insert ten entries with '0' values into the leaderboard
+    function _initializeLeaderboardZero() internal {
+        for (uint256 i = 0; i < 10; i++) {
+            string memory insertQuery = SQLHelpers.toInsert(
+                _LEADERBOARD_TABLE_PREFIX,
+                leaderboardTableId,
+                "addr, time, gun",
+                string.concat(
+                    SQLHelpers.quote("0"),
+                    ",",
+                    SQLHelpers.quote("0"),
+                    ",",
+                    SQLHelpers.quote("0")
+                )
+            );
+
+            // Execute the insert
+            TablelandDeployments.get().mutate(
+                address(this),
+                leaderboardTableId,
+                insertQuery
+            );
+        }
+    }
+
+    function addToLeaderboard(
+        uint256 id,
+        string memory addr,
+        string memory time,
+        string memory gun
+    ) external {
+        string memory setters = string.concat(
+            "addr=",
+            SQLHelpers.quote(addr),
+            ",",
+            "time=",
+            SQLHelpers.quote(time),
+            ",",
+            "gun=",
+            SQLHelpers.quote(gun)
+        );
+
+        string memory filters = string.concat("id=", Strings.toString(id));
+
+        TablelandDeployments.get().mutate(
+            address(this),
+            leaderboardTableId,
+            SQLHelpers.toUpdate(
+                _LEADERBOARD_TABLE_PREFIX,
+                leaderboardTableId,
+                setters,
+                filters
+            )
+        );
+    }
 }

@@ -10,7 +10,10 @@ import {
   WALLET,
 } from "@dataverse/dataverse-connector";
 import {
-  callFunction,
+  createUserFunc,
+  getLeadboardTableNameFunc,
+  getRoomTableNameFunc,
+  getUserTableNameFunc,
   insertValFunc,
   readTableFunc,
   updateValFunc,
@@ -226,18 +229,42 @@ const Temp = () => {
     console.log(JSON.parse(res));
   };
 
+  const getUserTableName = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await getUserTableNameFunc(signer);
+  };
+  const getRoomTableName = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await getRoomTableNameFunc(signer);
+  };
+  const getLeadboardTableName = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await getLeadboardTableNameFunc(signer);
+  };
+
   const readTable = async () => {
+    const table1 = "user_table_11155111_468";
+    const table2 = "room_table_11155111_469";
+    const table3 = "leaderboard_table_11155111_470";
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
-    await readTableFunc(signer);
+    await readTableFunc(signer, table1);
   };
-  const functionCall = async () => {
+
+  const createUser = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
-    await callFunction(signer);
+    await createUserFunc(signer);
   };
+
   const insertValue = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
@@ -260,19 +287,31 @@ const Temp = () => {
         Connect Wallet
       </button>
       <button
-        onClick={() => functionCall()}
+        onClick={() => getUserTableName()}
         className="border px-10 border-black"
       >
-        FunctionCall
+        getUserTableName
+      </button>
+      <button
+        onClick={() => getRoomTableName()}
+        className="border px-10 border-black"
+      >
+        getRoomTableName
+      </button>
+      <button
+        onClick={() => getLeadboardTableName()}
+        className="border px-10 border-black"
+      >
+        getLeadboardTableName
       </button>
       <button onClick={() => readTable()} className="border px-10 border-black">
         readTable
       </button>
       <button
-        onClick={() => insertValue()}
+        onClick={() => createUser()}
         className="border px-10 border-black"
       >
-        insertValue
+        createUser
       </button>
       <button
         onClick={() => updateValue()}
@@ -286,7 +325,7 @@ const Temp = () => {
       >
         getDappInfo
       </button>
-      <button
+      {/* <button
         onClick={() => checkCapability()}
         className="border px-10 border-black"
       >
@@ -321,7 +360,7 @@ const Temp = () => {
         className="border px-10 border-black"
       >
         loadFolderTrees
-      </button>
+      </button> */}
       <button
         onClick={() => deleteFolder()}
         className="border px-10 border-black"

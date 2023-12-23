@@ -5,16 +5,16 @@ import { Database } from "@tableland/sdk";
 
 const tableName = "starter_table_11155111_389"
 
-export const callFunction = async (signer) => {
+export const createUserFunc = async (signer) => {
     const account = await signer.getAddress();
     const contract = new ethers.Contract(
         CONTRACT_ADDRESS,
         CONTRACT_ABI,
         signer
     );
-    const tx = await contract.getUserTableId();
-    // const tx = await contract.createUser("name1", "bio1", "addr1", "guns1", "data1");
-    // await tx.wait();
+    // const tx = await contract.getTableName();
+    const tx = await contract.createUser("name1", "bio1", "addr1", "guns1", "data1");
+    await tx.wait();
     console.log(tx)
 };
 
@@ -30,19 +30,40 @@ export const insertValFunc = async (signer) => {
     console.log(tx)
 };
 
-export const updateValFunc = async (signer) => {
+export const getUserTableNameFunc = async (signer) => {
     const account = await signer.getAddress();
     const contract = new ethers.Contract(
         CONTRACT_ADDRESS,
         CONTRACT_ABI,
         signer
     );
-    const tx = await contract.updateVal(1, "updated-temp-Val-2");
-    await tx.wait();
+    const tx = await contract.getUserTableName();
     console.log(tx)
 };
 
-export const readTableFunc = async (signer) => {
+export const getRoomTableNameFunc = async (signer) => {
+    const account = await signer.getAddress();
+    const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.getRoomTableName();
+    console.log(tx)
+};
+
+export const getLeadboardTableNameFunc = async (signer) => {
+    const account = await signer.getAddress();
+    const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.getLeadboardTableName();
+    console.log(tx)
+};
+
+export const readTableFunc = async (signer, tableName) => {
     try {
         const db = new Database({ signer });
         if (tableName !== undefined) {
@@ -55,6 +76,20 @@ export const readTableFunc = async (signer) => {
         console.error(err.message);
     }
 }
+
+export const updateValFunc = async (signer) => {
+    const account = await signer.getAddress();
+    const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.updateVal(1, "updated-temp-Val-2");
+    await tx.wait();
+    console.log(tx)
+};
+
+
 
 // export const tableNameFunc = async (signer) => {
 //     const account = await signer.getAddress();

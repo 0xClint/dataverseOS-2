@@ -1,5 +1,5 @@
 export const CONTRACT_ADDRESS =
-  "0x32cA7D605Aa09EaDa6E0ecE7AC68C8668dEc21C4";
+  "0x9498af0c7B617a669b346b60E0522860D9060c89";
 
 
 export const CONTRACT_ABI = [
@@ -18,6 +18,67 @@ export const CONTRACT_ABI = [
     ],
     "name": "ChainNotSupported",
     "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "addr",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "time",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "gun",
+        "type": "string"
+      }
+    ],
+    "name": "addToLeaderboard",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "roomid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "addr",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "people",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "status",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "gun",
+        "type": "string"
+      }
+    ],
+    "name": "createRoom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [
@@ -55,9 +116,9 @@ export const CONTRACT_ABI = [
   {
     "inputs": [
       {
-        "internalType": "uint64[]",
-        "name": "roomIds",
-        "type": "uint64[]"
+        "internalType": "uint256",
+        "name": "roomid",
+        "type": "uint256"
       }
     ],
     "name": "deleteRoom",
@@ -80,132 +141,12 @@ export const CONTRACT_ABI = [
   },
   {
     "inputs": [],
-    "name": "getLeaderboardTableId",
+    "name": "getLeadboardTableName",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "string",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "getPolicy",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "allowInsert",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "allowUpdate",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "allowDelete",
-            "type": "bool"
-          },
-          {
-            "internalType": "string",
-            "name": "whereClause",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "withCheck",
-            "type": "string"
-          },
-          {
-            "internalType": "string[]",
-            "name": "updatableColumns",
-            "type": "string[]"
-          }
-        ],
-        "internalType": "struct TablelandPolicy",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "getPolicy",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "allowInsert",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "allowUpdate",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "allowDelete",
-            "type": "bool"
-          },
-          {
-            "internalType": "string",
-            "name": "whereClause",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "withCheck",
-            "type": "string"
-          },
-          {
-            "internalType": "string[]",
-            "name": "updatableColumns",
-            "type": "string[]"
-          }
-        ],
-        "internalType": "struct TablelandPolicy",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getRoomTableId",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -213,12 +154,25 @@ export const CONTRACT_ABI = [
   },
   {
     "inputs": [],
-    "name": "getUserTableId",
+    "name": "getRoomTableName",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "string",
         "name": "",
-        "type": "uint256"
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getUserTableName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
