@@ -8,9 +8,22 @@ export const Leaderboard = () => {
 
   useEffect(() => {
     const chechDead = async () => {
+      // console.log(players);
       let myPlayerData = players.filter((item) => item.myId == item.id);
-      // console.log(myPlayerData);
       if (myPlayerData[0]?.state?.dead) setDead();
+
+      if (players.length > 1) {
+        // console.log("player length >1");
+        let deadCount = 0;
+        for (let item of players) {
+          // console.log("iten: ", item);
+          if (item?.state?.dead) deadCount++;
+        }
+        console.log("deadCount : " + deadCount);
+        if (deadCount == players.length - 1) {
+          console.log("Winner");
+        }
+      }
     };
     chechDead();
   }, [players]);

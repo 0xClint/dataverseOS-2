@@ -11,11 +11,12 @@ import {
 } from "@dataverse/dataverse-connector";
 import {
   createUserFunc,
+  deleteUserFunc,
   getLeadboardTableNameFunc,
   getRoomTableNameFunc,
   getUserTableNameFunc,
-  insertValFunc,
   readTableFunc,
+  updateUserFunc,
   updateValFunc,
 } from "../utils/functionCall";
 import { ethers } from "ethers";
@@ -249,7 +250,7 @@ const Temp = () => {
   };
 
   const readTable = async () => {
-    const table1 = "user_table_11155111_468";
+    const table1 = "user_table_11155111_474";
     const table2 = "room_table_11155111_469";
     const table3 = "leaderboard_table_11155111_470";
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -264,13 +265,19 @@ const Temp = () => {
     const signer = provider.getSigner();
     await createUserFunc(signer);
   };
-
-  const insertValue = async () => {
+  const updateUser = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
-    await insertValFunc(signer);
+    await updateUserFunc(signer);
   };
+  const deleteUser = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await deleteUserFunc(signer);
+  };
+
   const updateValue = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
@@ -312,6 +319,18 @@ const Temp = () => {
         className="border px-10 border-black"
       >
         createUser
+      </button>
+      <button
+        onClick={() => updateUser()}
+        className="border px-10 border-black"
+      >
+        updateUser
+      </button>
+      <button
+        onClick={() => deleteUser()}
+        className="border px-10 border-black"
+      >
+        deleteUser
       </button>
       <button
         onClick={() => updateValue()}

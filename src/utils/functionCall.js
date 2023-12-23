@@ -12,20 +12,31 @@ export const createUserFunc = async (signer) => {
         CONTRACT_ABI,
         signer
     );
-    // const tx = await contract.getTableName();
     const tx = await contract.createUser("name1", "bio1", "addr1", "guns1", "data1");
     await tx.wait();
     console.log(tx)
 };
 
-export const insertValFunc = async (signer) => {
+export const updateUserFunc = async (signer) => {
     const account = await signer.getAddress();
     const contract = new ethers.Contract(
         CONTRACT_ADDRESS,
         CONTRACT_ABI,
         signer
     );
-    const tx = await contract.insertVal("temp-Val");
+    const tx = await contract.updateUser(1, "name100", "bio100", "addr100", "guns100", "data100");
+    await tx.wait();
+    console.log(tx)
+};
+
+export const deleteUserFunc = async (signer) => {
+    const account = await signer.getAddress();
+    const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.deleteUser(1);
     await tx.wait();
     console.log(tx)
 };
@@ -65,13 +76,14 @@ export const getLeadboardTableNameFunc = async (signer) => {
 
 export const readTableFunc = async (signer, tableName) => {
     try {
+        console.log(tableName)
         const db = new Database({ signer });
-        if (tableName !== undefined) {
-            const { results } = await db
-                .prepare(`SELECT * FROM ${tableName}`)
-                .all();
-            console.log(results);
-        }
+        // if (tableName !== undefined) {
+        const { results } = await db
+            .prepare(`SELECT * FROM ${tableName}`)
+            .all();
+        console.log(results);
+        // }
     } catch (err) {
         console.error(err.message);
     }

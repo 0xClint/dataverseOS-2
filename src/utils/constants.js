@@ -1,5 +1,7 @@
 export const CONTRACT_ADDRESS =
-  "0x9498af0c7B617a669b346b60E0522860D9060c89";
+  // "0x7c41DDc0F006591c2Cb688a6C72cF6344986eC04";
+  // "0x9498af0c7B617a669b346b60E0522860D9060c89";
+  "0x0Dc0E7C680074E35D44B82cD9b92AbEc064E0acc";
 
 
 export const CONTRACT_ABI = [
@@ -18,67 +20,6 @@ export const CONTRACT_ABI = [
     ],
     "name": "ChainNotSupported",
     "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "addr",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "time",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "gun",
-        "type": "string"
-      }
-    ],
-    "name": "addToLeaderboard",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "roomid",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "addr",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "people",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "status",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "gun",
-        "type": "string"
-      }
-    ],
-    "name": "createRoom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
   },
   {
     "inputs": [
@@ -116,19 +57,6 @@ export const CONTRACT_ABI = [
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "roomid",
-        "type": "uint256"
-      }
-    ],
-    "name": "deleteRoom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint64",
         "name": "id",
         "type": "uint64"
@@ -137,32 +65,6 @@ export const CONTRACT_ABI = [
     "name": "deleteUser",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getLeadboardTableName",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getRoomTableName",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
