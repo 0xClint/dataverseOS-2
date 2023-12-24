@@ -24,7 +24,7 @@ function App() {
       if (!isNewUser) {
         const { name, cid, age, bio, color } = await getFolderData();
 
-        setUserData({ name, cid, age, bio, color });
+        await setUserData({ name, cid, age, bio, color });
       }
     };
     connectDataverse();

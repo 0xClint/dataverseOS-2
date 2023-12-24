@@ -62,7 +62,7 @@ export const getFolderData = async () => {
     const res = await dataverseConnector.runOS({
         method: SYSTEM_CALL.loadFolderTrees,
     });
-    // console.log(res);
+    console.log(res);
     const data = Object.keys(res).filter((id) => {
         const { folderName } = res[id];
         if (folderName == "warfield") return id;
