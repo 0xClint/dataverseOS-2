@@ -1,39 +1,63 @@
 
 import { ethers } from "ethers";
-import { CONTRACT_ABI, CONTRACT_ADDRESS } from "./constants";
+import {
+    LEADERBOARD_CONTRACT_ABI,
+    LEADERBOARD_CONTRACT_ADDRESS,
+    ROOM_CONTRACT_ABI,
+    ROOM_CONTRACT_ADDRESS,
+    USER_CONTRACT_ABI,
+    USER_CONTRACT_ADDRESS
+} from "./constants";
 import { Database } from "@tableland/sdk";
 
-const tableName = "starter_table_11155111_389"
+export const readTableFunc = async (signer, tableName) => {
+    try {
+        const db = new Database({ signer });
+        if (tableName !== undefined) {
+            const { results } = await db
+                .prepare(`SELECT * FROM ${tableName}`)
+                .all();
+            console.log(results);
+            return results
+        }
+    } catch (err) {
+        console.error(err.message);
+    }
+}
 
-export const createUserFunc = async (signer) => {
+// ***********************USER_CONTRACT_FUNCTION *****************************
+
+export const createUserFunc = async (signer, { name,
+    bio,
+    cid, color
+}) => {
+
     const account = await signer.getAddress();
     const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
+        USER_CONTRACT_ADDRESS,
+        USER_CONTRACT_ABI,
         signer
     );
-    const tx = await contract.createUser("name1", "bio1", "addr1", "guns1", "data1");
+    const tx = await contract.createUser(name, bio, cid, color, "1", account, "data");
     await tx.wait();
     console.log(tx)
 };
 
 export const updateUserFunc = async (signer) => {
-    const account = await signer.getAddress();
     const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
+        USER_CONTRACT_ADDRESS,
+        USER_CONTRACT_ABI,
         signer
     );
-    const tx = await contract.updateUser(1, "name100", "bio100", "addr100", "guns100", "data100");
+    const tx = await contract.updateUser(1, "name100", "bio100", "cid100", "color100", "guns100", "addr100", "data100");
     await tx.wait();
     console.log(tx)
 };
 
 export const deleteUserFunc = async (signer) => {
-    const account = await signer.getAddress();
     const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
+        USER_CONTRACT_ADDRESS,
+        USER_CONTRACT_ABI,
         signer
     );
     const tx = await contract.deleteUser(1);
@@ -42,105 +66,91 @@ export const deleteUserFunc = async (signer) => {
 };
 
 export const getUserTableNameFunc = async (signer) => {
-    const account = await signer.getAddress();
     const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
+        USER_CONTRACT_ADDRESS,
+        USER_CONTRACT_ABI,
         signer
     );
     const tx = await contract.getUserTableName();
     console.log(tx)
 };
 
+// ***********************ROOM_CONTRACT_FUNCTION *****************************
+
 export const getRoomTableNameFunc = async (signer) => {
-    const account = await signer.getAddress();
     const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
+        ROOM_CONTRACT_ADDRESS,
+        ROOM_CONTRACT_ABI,
         signer
     );
     const tx = await contract.getRoomTableName();
     console.log(tx)
 };
 
-export const getLeadboardTableNameFunc = async (signer) => {
+export const createRoomFunc = async (signer, roomId, map) => {
     const account = await signer.getAddress();
     const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
+        ROOM_CONTRACT_ADDRESS,
+        ROOM_CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.createRoom(roomId, JSON.stringify([account]), "1", "open", "gun1", map, "data");
+    await tx.wait();
+    console.log(tx)
+};
+
+export const updateRoomFunc = async (signer, roomData) => {
+    let { addr, data, gun, id, roomid, map, people, status } = roomData;
+    // console.log(addr, data, gun, id, roomid, map, people, status);
+    const account = await signer.getAddress();
+    const contract = new ethers.Contract(
+        ROOM_CONTRACT_ADDRESS,
+        ROOM_CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.updateRoom(roomid, JSON.stringify([...addr, account]), (parseInt(people) + 1).toString(), "open", gun, map, data);
+    await tx.wait();
+    console.log(tx)
+};
+
+export const deleteRoomFunc = async (signer, roomID) => {
+    const contract = new ethers.Contract(
+        ROOM_CONTRACT_ADDRESS,
+        ROOM_CONTRACT_ABI,
+        signer
+    );
+    const tx = await contract.deleteRoom(roomID);
+    await tx.wait();
+    console.log(tx)
+};
+
+// ***********************LEADERBOARD_CONTRACT_FUNCTION *****************************
+
+export const getLeadboardTableNameFunc = async (signer) => {
+    const contract = new ethers.Contract(
+        LEADERBOARD_CONTRACT_ADDRESS,
+        LEADERBOARD_CONTRACT_ABI,
         signer
     );
     const tx = await contract.getLeadboardTableName();
     console.log(tx)
 };
 
-export const readTableFunc = async (signer, tableName) => {
-    try {
-        console.log(tableName)
-        const db = new Database({ signer });
-        // if (tableName !== undefined) {
-        const { results } = await db
-            .prepare(`SELECT * FROM ${tableName}`)
-            .all();
-        console.log(results);
-        // }
-    } catch (err) {
-        console.error(err.message);
-    }
-}
 
-export const updateValFunc = async (signer) => {
-    const account = await signer.getAddress();
+export const updateLeaderboardFunc = async (signer) => {
     const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
+        LEADERBOARD_CONTRACT_ADDRESS,
+        LEADERBOARD_CONTRACT_ABI,
         signer
     );
-    const tx = await contract.updateVal(1, "updated-temp-Val-2");
+    const tx = await contract.updateLeaderboard(1, "addr1", "time1", "gun2", "map2", "data2");
     await tx.wait();
     console.log(tx)
 };
 
 
 
-// export const tableNameFunc = async (signer) => {
-//     const account = await signer.getAddress();
-//     const contract = new ethers.Contract(
-//         AVATAR_NFT_CONTRACT_ADDRESS,
-//         AVATAR_NFT_CONTRACT_ABI,
-//         signer
-//     );
-//     const tx = await contract.setUserInfo(account, 1, 2, 3, 10);
-//     await tx.wait();
-//     console.log(tx)
-// };
 
-// export const setUserFriendsFunc = async (signer) => {
-//     const account = await signer.getAddress();
-//     const contract = new ethers.Contract(
-//         AVATAR_NFT_CONTRACT_ADDRESS,
-//         AVATAR_NFT_CONTRACT_ABI,
-//         signer
-//     );
-//     // const tx = await contract.setUserFriends(account, { ["add1", "add2", "add3", "add4"]});
-//     await tx.wait();
-//     console.log(tx)
-// };
 
-// export const fetchUserMetadataFunc = async (signer) => {
-//     const account = signer.getAddress();
-//     const contract = new ethers.Contract(
-//         AVATAR_NFT_CONTRACT_ADDRESS,
-//         AVATAR_NFT_CONTRACT_ABI,
-//         signer
-//     );
-//     try {
-//         const res = await contract.fetchUserMetadata(account);
-//         console.log("res : " + res);
-//     } catch (error) {
-//         console.log(error.errorArgs[0]);
-//         return "null";
-//     }
-// };
 
 

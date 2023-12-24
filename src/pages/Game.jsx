@@ -2,7 +2,7 @@ import { Loader, PerformanceMonitor, SoftShadows } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Physics } from "@react-three/rapier";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Experience } from "../gameComponents/Experience";
 import { Leaderboard } from "../gameComponents/Leaderboard";
 import { useStore } from "../hooks/useStore";
@@ -13,9 +13,12 @@ const Game = () => {
 
   const [dead] = useStore((state) => [state.dead]);
 
+  // useEffect(() => {}, [winner]);
+
   return (
     <div className="h-screen w-screen">
       <Loader />
+
       <Leaderboard />
       {dead && (
         <div className="absolute z-10 w-screen h-screen make-flex bg-[#b0ceff3a]">

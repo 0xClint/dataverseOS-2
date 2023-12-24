@@ -23,7 +23,7 @@ export function PlayerProfile({ color }) {
   );
 
   useEffect(() => {
-    console.log(color);
+    // console.log(color);
     nodes.Head.traverse((child) => {
       if (child.isMesh && child.material.name === "Character_Main") {
         child.material = new MeshStandardMaterial({

@@ -12,14 +12,19 @@ import { Bullet } from "./Bullet";
 import { BulletHit } from "./BulletHit";
 import { CharacterController } from "./CharacterController";
 import { Map } from "./Map";
+import { useStore } from "../hooks/useStore";
 
 export const Experience = ({ downgradedPerformance = false }) => {
   const [players, setPlayers] = useState([]);
   const [killstate, setKillState] = useState([]);
+  const [roomId, userData] = useStore((state) => [
+    state.roomId,
+    state.userData,
+  ]);
 
   const start = async () => {
     // Start the game
-    await insertCoin({ maxPlayersPerRoom: 2, roomCode: "BbCD" });
+    await insertCoin({ maxPlayersPerRoom: 2, roomCode: roomId });
 
     // Create a joystick controller for each joining player
     onPlayerJoin((state) => {
@@ -31,7 +36,11 @@ export const Experience = ({ downgradedPerformance = false }) => {
       });
       const newPlayer = { state, joystick };
 
-      // state.setState("profile", { name: "p1", color: "red",photo:"url" });
+      state.setState("profile", {
+        name: userData.name,
+        color: userData.color,
+        photo: `https://ipfs.io/ipfs/${userData.cid}/${"Clint_bg_violet"}.png`,
+      });
       state.setState("health", 100);
       state.setState("deaths", 0);
       state.setState("kills", 0);

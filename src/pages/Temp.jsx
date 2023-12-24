@@ -10,14 +10,17 @@ import {
   WALLET,
 } from "@dataverse/dataverse-connector";
 import {
+  createRoomFunc,
   createUserFunc,
+  deleteRoomFunc,
   deleteUserFunc,
   getLeadboardTableNameFunc,
   getRoomTableNameFunc,
   getUserTableNameFunc,
   readTableFunc,
+  updateLeaderboardFunc,
+  updateRoomFunc,
   updateUserFunc,
-  updateValFunc,
 } from "../utils/functionCall";
 import { ethers } from "ethers";
 
@@ -225,7 +228,7 @@ const Temp = () => {
   const fetchBareFile = async () => {
     const res = await dataverseConnector.runOS({
       method: SYSTEM_CALL.loadBareFileContent,
-      params: "kjzl6kcym7w8y8avvxck0q4logiadprh174znzcmlh30ew3h57b0sjachmabb1k",
+      params: "kjzl6kcym7w8y6md7buosjpec6illrahgzxlod1fy6wqqcre29e3n93oiklisrt",
     });
     console.log(JSON.parse(res));
   };
@@ -250,9 +253,9 @@ const Temp = () => {
   };
 
   const readTable = async () => {
-    const table1 = "user_table_11155111_474";
-    const table2 = "room_table_11155111_469";
-    const table3 = "leaderboard_table_11155111_470";
+    const table1 = "leaderboard_table_11155111_499";
+    const table2 = "room_table_11155111_493";
+    const table3 = "user_table_11155111_491";
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
@@ -278,11 +281,29 @@ const Temp = () => {
     await deleteUserFunc(signer);
   };
 
-  const updateValue = async () => {
+  const createRoom = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
-    await updateValFunc(signer);
+    await createRoomFunc(signer);
+  };
+  const updateRoom = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await updateRoomFunc(signer);
+  };
+  const deleteRoom = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await deleteRoomFunc(signer);
+  };
+  const updateLeaderboard = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    await updateLeaderboardFunc(signer);
   };
 
   return (
@@ -292,28 +313,39 @@ const Temp = () => {
         className="border px-10 border-black"
       >
         Connect Wallet
+      </button>{" "}
+      <button
+        onClick={() => getRoomTableName()}
+        className="border px-10 border-black"
+      >
+        getRoomTableName
+      </button>{" "}
+      <button
+        onClick={() => updateRoom()}
+        className="border px-10 border-black"
+      >
+        updateRoom
       </button>
+      <button
+        onClick={() => deleteRoom()}
+        className="border px-10 border-black"
+      >
+        deleteRoom
+      </button>
+      <button
+        onClick={() => updateLeaderboard()}
+        className="border px-10 border-black"
+      >
+        updateLeaderboard
+      </button>
+      {/* 
       <button
         onClick={() => getUserTableName()}
         className="border px-10 border-black"
       >
         getUserTableName
       </button>
-      <button
-        onClick={() => getRoomTableName()}
-        className="border px-10 border-black"
-      >
-        getRoomTableName
-      </button>
-      <button
-        onClick={() => getLeadboardTableName()}
-        className="border px-10 border-black"
-      >
-        getLeadboardTableName
-      </button>
-      <button onClick={() => readTable()} className="border px-10 border-black">
-        readTable
-      </button>
+      
       <button
         onClick={() => createUser()}
         className="border px-10 border-black"
@@ -332,11 +364,29 @@ const Temp = () => {
       >
         deleteUser
       </button>
+   
       <button
-        onClick={() => updateValue()}
+        onClick={() => createRoom()}
         className="border px-10 border-black"
       >
-        updateValue
+        createRoom
+      </button>
+     
+     
+      <button
+        onClick={() => getLeadboardTableName()}
+        className="border px-10 border-black"
+      >
+        getLeadboardTableName
+      </button>
+      <button
+        onClick={() => updateLeaderboard()}
+        className="border px-10 border-black"
+      >
+        updateLeaderboard
+      </button> */}
+      <button onClick={() => readTable()} className="border px-10 border-black">
+        readTable
       </button>
       <button
         onClick={() => getTableInfo()}
@@ -344,7 +394,7 @@ const Temp = () => {
       >
         getDappInfo
       </button>
-      {/* <button
+      <button
         onClick={() => checkCapability()}
         className="border px-10 border-black"
       >
@@ -379,7 +429,7 @@ const Temp = () => {
         className="border px-10 border-black"
       >
         loadFolderTrees
-      </button> */}
+      </button>
       <button
         onClick={() => deleteFolder()}
         className="border px-10 border-black"

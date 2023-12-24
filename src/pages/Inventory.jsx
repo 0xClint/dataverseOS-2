@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   LeftArrowIcon,
   RightArrowIcon,
@@ -11,59 +11,11 @@ import { PlayerProfile } from "../gameComponents/Playerprofile";
 import { OrbitControls } from "@react-three/drei";
 import { Header } from "../components";
 import { weaponsData } from "../assets";
-
-const colorData = [
-  {
-    lock: false,
-    color: "#4CB9E7",
-  },
-  {
-    lock: false,
-    color: "#EF4040",
-  },
-  {
-    lock: false,
-    color: "#C69774",
-  },
-  {
-    lock: false,
-    color: "#176B87",
-  },
-  {
-    lock: false,
-    color: "#9ADE7B",
-  },
-  {
-    lock: true,
-    color: "#FFC436",
-  },
-  {
-    lock: true,
-    color: "#F875AA",
-  },
-  {
-    lock: true,
-    color: "#232D3F",
-  },
-  {
-    lock: true,
-    color: "#7752FE",
-  },
-  {
-    lock: true,
-    color: "#F99417",
-  },
-  {
-    lock: true,
-    color: "#F8FF95",
-  },
-  {
-    lock: true,
-    color: "#512B81",
-  },
-];
+import { useStore } from "../hooks/useStore";
+import { colorData } from ".";
 
 const Inventory = () => {
+  const [userData] = useStore((state) => [state.userData]);
   const [gunId, setGunId] = useState(1);
   const [color, setColor] = useState("#F99417");
 
@@ -121,7 +73,7 @@ const Inventory = () => {
             </div>
           </div>
           <h2 className="absolute bottom-40 text-[2rem] w-full text-center text-white">
-            Player name
+            {userData.name}
           </h2>
         </div>
       ) : (
