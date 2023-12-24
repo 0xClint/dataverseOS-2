@@ -18,9 +18,10 @@ const Home = () => {
   const [map, setMap] = useState("Map1");
   const [newUserModel, setNewUserModel] = useState(false);
   const [multiplayerModel, setMultiplayerModel] = useState(false);
-  const [isNewUser, setRoomId] = useStore((state) => [
+  const [isNewUser, setRoomId, setRoomState] = useStore((state) => [
     state.isNewUser,
     state.setRoomId,
+    state.setRoomState,
   ]);
   const navigate = useNavigate();
 
@@ -45,6 +46,7 @@ const Home = () => {
               console.log("deleteRoom");
               await deleteRoomFunc(signer, roomList[i].roomid);
             }
+            setRoomState({ gun: "gun1", map });
             setRoomId(roomList[i].roomid);
             setLoader(false);
             navigate("/game");
@@ -62,6 +64,7 @@ const Home = () => {
         setRoomId(roomId);
         await createRoomFunc(signer, roomId, map);
       }
+      setRoomState({ gun: "gun1", map });
       navigate("/game");
       setLoader(false);
     }

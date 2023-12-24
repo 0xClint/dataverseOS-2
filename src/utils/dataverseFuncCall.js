@@ -30,7 +30,7 @@ export const createCapability = async () => {
             appId: process.env.REACT_APP_DATAVERSE_APP_ID,
         },
     });
-    // console.log(res);
+    console.log(res);
 };
 
 export const checkCapability = async () => {

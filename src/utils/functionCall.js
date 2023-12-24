@@ -137,13 +137,23 @@ export const getLeadboardTableNameFunc = async (signer) => {
 };
 
 
-export const updateLeaderboardFunc = async (signer) => {
+export const updateLeaderboardFunc = async (signer,
+    id,
+    killstate,
+    roomState) => {
+    const account = await signer.getAddress();
     const contract = new ethers.Contract(
         LEADERBOARD_CONTRACT_ADDRESS,
         LEADERBOARD_CONTRACT_ABI,
         signer
     );
-    const tx = await contract.updateLeaderboard(1, "addr1", "time1", "gun2", "map2", "data2");
+    let totalTime = 0;
+    console.log(killstate)
+    for (let i = 1; i < killstate.length; i++) {
+        totalTime = killstate[i] - killstate[i - 1];
+    }
+    console.log(id, account, totalTime / killstate.length, roomState.gun, roomState.map,)
+    const tx = await contract.updateLeaderboard(id, account, (totalTime / (killstate.length * 1000)).toString(), roomState.gun, roomState.map, "data");
     await tx.wait();
     console.log(tx)
 };

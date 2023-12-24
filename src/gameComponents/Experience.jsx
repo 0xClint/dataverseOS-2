@@ -16,10 +16,10 @@ import { useStore } from "../hooks/useStore";
 
 export const Experience = ({ downgradedPerformance = false }) => {
   const [players, setPlayers] = useState([]);
-  const [killstate, setKillState] = useState([]);
-  const [roomId, userData] = useStore((state) => [
+  const [roomId, userData, setKillState] = useStore((state) => [
     state.roomId,
     state.userData,
+    state.setKillState,
   ]);
 
   const start = async () => {
@@ -88,7 +88,7 @@ export const Experience = ({ downgradedPerformance = false }) => {
   const onKilled = (_victim, killer) => {
     const killerState = players.find((p) => p.state.id === killer).state;
     killerState.setState("kills", killerState.state.kills + 1);
-    setKillState([...killstate, new Date().getTime()]);
+    setKillState();
   };
 
   return (

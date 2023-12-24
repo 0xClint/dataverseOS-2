@@ -1,30 +1,36 @@
 import { usePlayersList } from "playroomkit";
 import { useEffect, useState } from "react";
 import { useStore } from "../hooks/useStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
+import { readTableFunc, updateLeaderboardFunc } from "../utils/functionCall";
+import { Loader } from "../components";
 
 export const Leaderboard = () => {
   const players = usePlayersList(true);
   const [winner, setWinner] = useState(false);
-  const [modal, setModal] = useState(true);
-  // const [dead, setDead] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [killstate, roomState] = useStore((state) => [
+    state.killstate,
+    state.roomState,
+  ]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const chechDead = async () => {
       let myPlayerData = players.filter((item) => item.myId == item.id);
-      if (myPlayerData[0]?.state?.dead) setModal(true);
-
+      if (myPlayerData[0]?.state?.dead) {
+        setWinner(false);
+        setModal(true);
+        return 0;
+      }
       if (players.length > 1) {
-        // console.log("player length >1");
         let deadCount = 0;
         for (let item of players) {
-          // console.log("iten: ", item);
           if (item?.state?.dead) deadCount++;
         }
-        console.log("deadCount : " + deadCount);
         if (deadCount == players.length - 1) {
-          console.log("You are Winner!");
           setWinner(true);
           setModal(true);
         }
@@ -34,14 +40,43 @@ export const Leaderboard = () => {
   }, [players]);
 
   const handleSaveWin = async () => {
+    setLoader(true);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
+    console.log(process.env.REACT_APP_LEADERBOARD_TABLE_NAME);
+    const rankList = await readTableFunc(
+      signer,
+      process.env.REACT_APP_LEADERBOARD_TABLE_NAME
+    );
+    let lastRankTime = rankList[0];
+    let lastRankId = rankList[0].id;
+    for (let i = 0; i < rankList.length; i++) {
+      if (lastRankTime < rankList[i]) {
+        lastRankTime = rankList[i];
+        lastRankId = rankList[i].id;
+      }
+      if (rankList[i].addr == "0") {
+        console.log("rankList[i]: " + rankList[i].id);
+        await updateLeaderboardFunc(
+          signer,
+          rankList[i].id,
+          killstate,
+          roomState
+        );
+        return 0;
+      }
+    }
+    console.log("lastRank Id : " + lastRankId);
+    await updateLeaderboardFunc(signer, lastRankId, killstate, roomState);
+    setLoader(false);
+    navigate("/");
   };
 
   if (modal) {
     return (
       <div className="absolute z-10 w-screen h-screen make-flex bg-[#b0ceff88]">
+        {loader && <Loader />}
         <div className="card-container w-[500px] py-6 flex flex-col">
           <h1 className="text-center text-[2.5rem] font-bold mb-10">
             {winner ? "You are the Winner" : "You were killed"}

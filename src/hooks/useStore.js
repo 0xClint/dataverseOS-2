@@ -18,4 +18,12 @@ export const useStore = create((set) => ({
     setRoomId: (res) => {
         set(() => ({ roomId: res }));
     },
+    killstate: [],
+    setKillState: () => {
+        set((prev) => ({ killstate: [...prev.killstate, new Date().getTime()] }));
+    },
+    roomState: { gun: "gun1", map: "map1" },
+    setRoomState: (res) => {
+        set(() => ({ roomState: res }));
+    },
 }))
